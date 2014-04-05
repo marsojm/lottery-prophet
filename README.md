@@ -1,6 +1,6 @@
 # lottery-prophet
 
-A Clojure library designed to ... well, that part is up to you.
+Clojure project for tongue-in-cheek competition to foresee lottery numbers. Don't take this too seriously. ;) 
 
 ## Usage
 
