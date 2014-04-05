@@ -68,7 +68,10 @@
   (let [pred (fn [[num freq]]
                (not (some #(= num %) nums-to-remove)))]
     (filter pred nums)))
-        
+
+(defn filter-rows-containing-num
+  [nums n]
+  (filter #(some #{n} %) nums))    
 ;(def original-data (read-resource "data/original.htm"))
 ;(def preprocessed-data (find-lottery-lines original-data))
 ;(def cleaned-data (clean-data preprocessed-data))
