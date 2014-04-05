@@ -71,7 +71,20 @@
 
 (defn filter-rows-containing-num
   [nums n]
-  (filter #(some #{n} %) nums))    
+  (filter #(some #{n} %) nums))
+
+(defn find-num
+  [nums n]
+  (first (drop-while #(not (== n (first %))) nums)))  
+  
+(defn inc-frequencies
+  [numbers inc-numbers]
+  (let [increase-if-matches (fn [[num freq] i-nums]
+                              (let [[i-num i-freq] (find-num i-nums num)]
+                              (if (nil? i-num)
+                                (vector num freq)
+                                (vector num (+ freq i-freq)))))]
+    (map #(increase-if-matches % inc-numbers ) numbers )))  
 ;(def original-data (read-resource "data/original.htm"))
 ;(def preprocessed-data (find-lottery-lines original-data))
 ;(def cleaned-data (clean-data preprocessed-data))
@@ -80,12 +93,9 @@
 
 (def lottery-numbers (map remove-from-plus lottery-data))
 (def final-data (map str->int-seq lottery-numbers))
-(def frequency-set #{})
-
 
 (def number-frequencies (sort (freqs final-data)))
 (def freq-count (reduce + 0 (map second number-frequences)))  
-;(def normalized-numbers (sort (normalize number-frequences)))
 
 (def accumulated-number-frequencies (add-acc number-frequencies))
 
