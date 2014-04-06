@@ -95,7 +95,7 @@
 (def final-data (map str->int-seq lottery-numbers))
 
 (def number-frequencies (sort (freqs final-data)))
-(def freq-count (reduce + 0 (map second number-frequences)))  
+(def freq-count (reduce + 0 (map second number-frequencies)))  
 
 (def accumulated-number-frequencies (add-acc number-frequencies))
 
@@ -117,7 +117,42 @@
             new-win-num (first (closest-by-acc new-acc (rand-int (inc new-upper-limit))))]
         (recur new-nums new-acc new-upper-limit new-winning-row new-win-num (dec rounds))))))
 
-  
+(defn filter-rows-containing
+  [original-numbers numbers-to-filter]
+  (loop [o-nums original-numbers
+         to-filter (first numbers-to-filter)
+         xs (rest numbers-to-filter)]
+    (if (nil? to-filter)
+      o-nums
+      (recur (filter-rows-containing-num o-nums to-filter) (first xs) (rest xs)))))        
+        
+(defn find-winning-numbers-advanced!
+  [numbers orig-num-list]
+  (loop [nums numbers
+         acc-nums (add-acc numbers)
+         upper-limit (second (last acc-nums))
+         winning-row '()
+         win-num (first (closest-by-acc acc-nums (rand-int (inc upper-limit))))
+         to-filter (vector win-num)
+         rounds 7]
+    (if (== rounds 0)
+      (sort winning-row)
+      (let [new-nums (remove-numbers nums [win-num])
+            acc-addition (sort (freqs (filter-rows-containing-num orig-num-list to-filter)))
+            new-acc (inc-frequencies (add-acc new-nums) acc-addition)
+            new-upper-limit (second (last new-acc))
+            new-winning-row (conj winning-row win-num)
+            new-win-num (first (closest-by-acc new-acc (rand-int (inc new-upper-limit))))
+            new-to-filter (conj to-filter new-win-num)]
+        (recur new-nums new-acc new-upper-limit new-winning-row new-win-num new-to-filter (dec rounds))))))        
+        
+(defn find-n-winning-rows
+  [n]
+  (dotimes [times n] (println (find-winning-numbers! number-frequencies))))
+
+(defn find-n-winning-rows-adv
+  [n]
+  (dotimes [times n] (println (find-winning-numbers-advanced! number-frequencies final-data))))    
   
   
   
