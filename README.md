@@ -1,6 +1,6 @@
 # lottery-prophet
 
-Clojure project for tongue-in-cheek competition to foresee lottery numbers. Don't take this too seriously. ;) 
+Clojure project for a competition to foresee lottery numbers. 
 
 ## Usage
 
